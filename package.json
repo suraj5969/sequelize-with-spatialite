@@ -1,21 +1,14 @@
 {
-  "name": "sequelize",
-  "description": "Sequelize is a promise-based Node.js ORM tool for Postgres, MySQL, MariaDB, SQLite, Microsoft SQL Server, Amazon Redshift and Snowflake’s Data Cloud. It features solid transaction support, relations, eager and lazy loading, read replication and more.",
-  "version": "0.0.0-development",
-  "funding": [
-    {
-      "type": "opencollective",
-      "url": "https://opencollective.com/sequelize"
-    }
-  ],
+  "name": "sequelize-with-spatialite",
+  "description": "Use Spatialite extension of SQLite with Sequelize.",
+  "version": "0.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sequelize/sequelize.git"
+    "url": "https://github.com/suraj5969/sequelize-with-spatialite.git"
   },
   "bugs": {
-    "url": "https://github.com/sequelize/sequelize/issues"
+    "url": "https://github.com/suraj5969/sequelize-with-spatialite/issues"
   },
-  "homepage": "https://sequelize.org/",
   "main": "./lib/index.js",
   "types": "./types/index.d.ts",
   "type": "commonjs",
@@ -157,67 +150,12 @@
     }
   },
   "keywords": [
-    "mysql",
-    "mariadb",
-    "sqlite",
-    "postgresql",
-    "postgres",
-    "pg",
-    "mssql",
-    "db2",
-    "ibm_db",
-    "sql",
-    "oracledb",
-    "sqlserver",
-    "snowflake",
-    "orm",
-    "nodejs",
-    "object relational mapper",
-    "database",
-    "db"
+    "SQLite",
+    "Spatialite",
+    "Sequelize"
   ],
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-angular"
-    ],
-    "rules": {
-      "type-enum": [
-        2,
-        "always",
-        [
-          "build",
-          "ci",
-          "docs",
-          "feat",
-          "fix",
-          "perf",
-          "refactor",
-          "revert",
-          "style",
-          "test",
-          "meta"
-        ]
-      ]
-    }
-  },
   "lint-staged": {
     "*!(d).[tj]s": "eslint"
-  },
-  "release": {
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "semantic-release-fail-on-major-bump",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/npm",
-      "@semantic-release/github"
-    ],
-    "branches": [
-      "v6",
-      {
-        "name": "v6-beta",
-        "prerelease": "beta"
-      }
-    ]
   },
   "publishConfig": {
     "tag": "latest"
