@@ -1,7 +1,7 @@
 {
   "name": "sequelize-with-spatialite",
   "description": "Use Spatialite extension of SQLite with Sequelize.",
-  "version": "0.1",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/suraj5969/sequelize-with-spatialite.git"
@@ -53,6 +53,7 @@
     "retry-as-promised": "^7.0.4",
     "semver": "^7.5.4",
     "sequelize-pool": "^7.1.0",
+    "spatialite": "^0.1.0",
     "toposort-class": "^1.0.1",
     "uuid": "^8.3.2",
     "validator": "^13.9.0",

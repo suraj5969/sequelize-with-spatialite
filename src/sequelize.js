@@ -636,6 +636,21 @@ class Sequelize {
       checkTransaction();
 
       const connection = await (options.transaction ? options.transaction.connection : this.connectionManager.getConnection(options));
+      // load spatilaite extension before doing any DB queries
+      if (this.dialect.name === 'sqlite' && !this.spatialiteLoaded) {
+        await new Promise((resolve, reject) => {
+          // load spatialite extension
+          connection.spatialite(err => {
+            if (err) {
+              console.error('Error while loading spatialite', err);
+              // unable to load spatialite extension
+              reject(err);
+            }
+            resolve();
+          });
+        });
+        this.spatialiteLoaded = true;
+      }
 
       if (this.options.dialect === 'db2' && options.alter) {
         if (options.alter.drop === false) {

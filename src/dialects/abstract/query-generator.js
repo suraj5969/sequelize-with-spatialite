@@ -17,6 +17,16 @@ const Op = require('../../operators');
 const sequelizeError = require('../../errors');
 const IndexHints = require('../../index-hints');
 
+function isTypeGeometry(dialect, model, attr) {
+  if (attr.includes('`')) {
+    attr = attr.replace(/`/g, '');
+  }
+  const attribute = model.rawAttributes[attr];
+  return dialect === 'sqlite' && attribute && attribute.type instanceof DataTypes.GEOMETRY;
+}
+function asGeoJSON(attr) {
+  return `AsGeoJSON(${attr})`;
+}
 
 /**
  * Abstract Query Generator
@@ -1592,15 +1602,27 @@ https://github.com/sequelize/sequelize/discussions/15694`);
         if (this.options.minifyAliases) {
           alias = this._getMinifiedAlias(alias, mainTableAs, options);
         }
-
+        // added below if to add GeoJson function to the query for Geometry data type
+        if (isTypeGeometry(this.dialect, options.model, attr[0])) {
+          attr[0] = asGeoJSON(attr[0]);
+        }
         attr = [attr[0], this.quoteIdentifier(alias)].join(' AS ');
       } else {
         attr = !attr.includes(Utils.TICK_CHAR) && !attr.includes('"')
           ? this.quoteAttribute(attr, options.model)
           : this.escape(attr);
       }
+      let addParentTableReference = false;
       if (!_.isEmpty(options.include) && (!attr.includes('.') || options.dotNotation) && addTable) {
-        attr = `${mainTableAs}.${attr}`;
+        if (isTypeGeometry(this.dialect, options.model, attr)) {
+          attr = `${asGeoJSON(`${mainTableAs}.${attr}`)} AS ${attr}`;
+          addParentTableReference = true;
+        } else {
+          attr = `${mainTableAs}.${attr}`;
+        }
+      }
+      if (!addParentTableReference && isTypeGeometry(this.dialect, options.model, attr)) {
+        attr = `${asGeoJSON(attr)} AS ${attr}`;
       }
 
       return attr;
@@ -1682,7 +1704,9 @@ https://github.com/sequelize/sequelize/discussions/15694`);
         if (this.options.minifyAliases) {
           alias = this._getMinifiedAlias(alias, includeAs.internalAs, topLevelInfo.options);
         }
-
+        if (isTypeGeometry(this.dialect, include.model, attr)) {
+          prefix = asGeoJSON(prefix);
+        }
         return Utils.joinSQLFragments([
           prefix,
           'AS',

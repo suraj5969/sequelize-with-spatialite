@@ -40,7 +40,7 @@ module.exports = BaseTypes => {
   BaseTypes.ENUM.types.sqlite = false;
   BaseTypes.REAL.types.sqlite = ['REAL'];
   BaseTypes.DOUBLE.types.sqlite = ['DOUBLE PRECISION'];
-  BaseTypes.GEOMETRY.types.sqlite = false;
+  BaseTypes.GEOMETRY.types.sqlite = ['GEOMETRY'];
   BaseTypes.JSON.types.sqlite = ['JSON', 'JSONB'];
 
   class JSONTYPE extends BaseTypes.JSON {
@@ -56,6 +56,11 @@ module.exports = BaseTypes => {
         return new Date(date + options.timezone);
       }
       return new Date(date); // We already have a timezone stored in the string
+    }
+  }
+  class GEOMETRY extends BaseTypes.GEOMETRY {
+    static parse(data) {
+      return JSON.parse(data);
     }
   }
 
@@ -208,6 +213,7 @@ module.exports = BaseTypes => {
     TEXT,
     ENUM,
     JSON: JSONTYPE,
-    CITEXT
+    CITEXT,
+    GEOMETRY
   };
 };

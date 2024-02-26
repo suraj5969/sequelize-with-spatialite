@@ -21,7 +21,7 @@ class ConnectionManager extends AbstractConnectionManager {
     }
 
     this.connections = {};
-    this.lib = this._loadDialectModule('sqlite3');
+    this.lib = this._loadDialectModule('spatialite');
     this.refreshTypeParser(dataTypes);
   }
 
